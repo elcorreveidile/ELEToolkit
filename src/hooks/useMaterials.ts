@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useMaterialsStore } from '../store/materialsStore';
-import { Material } from '../types';
 
 export const useMaterials = () => {
   const {
