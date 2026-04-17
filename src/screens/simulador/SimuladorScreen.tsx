@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
-import { LoadingMessages } from '../../components/ui/LoadingMessages';
 import { SPANISH_LEVELS, CONVERSATION_CONTEXTS } from '../../constants';
 import { openaiService } from '../../lib/openai/client';
 import { useMaterials } from '../../hooks/useMaterials';
@@ -182,7 +181,10 @@ export const SimuladorScreen = () => {
         ))}
         {loading && (
           <View style={[styles.messageBubble, styles.assistantMessage]}>
-            <LoadingMessages type="simulador" />
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="small" color="#4F46E5" />
+              <Text style={styles.loadingText}>💬 Escribiendo...</Text>
+            </View>
           </View>
         )}
       </ScrollView>
@@ -329,5 +331,14 @@ const styles = StyleSheet.create({
   actionButton: {
     flex: 1,
     marginRight: 8,
+  },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  loadingText: {
+    fontSize: 14,
+    color: '#4F46E5',
   },
 });

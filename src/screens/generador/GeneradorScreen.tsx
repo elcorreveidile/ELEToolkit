@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Fragment } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
-import { LoadingMessages } from '../../components/ui/LoadingMessages';
 import { AuthAlert } from '../../components/ui/AuthAlert';
 import { SPANISH_LEVELS, EXERCISE_TYPES, COMMON_TOPICS } from '../../constants';
 import { openaiService } from '../../lib/openai/client';
@@ -135,7 +134,13 @@ export const GeneradorScreen = () => {
         style={styles.generateButton}
       />
 
-      {loading && <LoadingMessages type="generador" />}
+      {loading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#4F46E5" />
+          <Text style={styles.loadingText}>🤖 Generando ejercicio...</Text>
+          <Text style={styles.loadingSubtext}>💡 Esto puede tomar unos segundos</Text>
+        </View>
+      )}
 
       {generatedContent && !loading ? (
         <View style={styles.resultSection}>
@@ -216,5 +221,27 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     marginTop: 8,
+  },
+  loadingContainer: {
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F9FAFB',
+    borderRadius: 12,
+    marginVertical: 16,
+  },
+  loadingText: {
+    marginTop: 12,
+    fontSize: 16,
+    color: '#4F46E5',
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  loadingSubtext: {
+    marginTop: 8,
+    fontSize: 12,
+    color: '#6B7280',
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
 });

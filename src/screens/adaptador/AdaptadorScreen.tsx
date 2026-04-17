@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert, Switch } from 'react-native';
+import { Fragment } from 'react';
+import { View, Text, StyleSheet, ScrollView, Alert, Switch, ActivityIndicator } from 'react-native';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Card } from '../../components/ui/Card';
-import { LoadingMessages } from '../../components/ui/LoadingMessages';
 import { SPANISH_LEVELS } from '../../constants';
 import { openaiService } from '../../lib/openai/client';
 import { useMaterials } from '../../hooks/useMaterials';
@@ -83,7 +83,8 @@ ${adaptedResult.changes.map(c => `• ${c}`).join('\n')}
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <Fragment>
+      <ScrollView style={styles.container}>
       <Text style={styles.title}>Adaptador de Textos</Text>
 
       <View style={styles.section}>
@@ -154,9 +155,15 @@ ${adaptedResult.changes.map(c => `• ${c}`).join('\n')}
         style={styles.adaptButton}
       />
 
-      {loading && <LoadingMessages type="adaptador" />}
+      {loading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#4F46E5" />
+          <Text style={styles.loadingText}>🔄 Adaptando texto...</Text>
+          <Text style={styles.loadingSubtext}>✨ Ajustando al nivel {targetLevel}</Text>
+        </View>
+      )}
 
-      {adaptedResult && !loading ? (
+      {adaptedResult && !loading && (
         <>
           <Card style={styles.resultCard}>
             <Text style={styles.resultTitle}>Texto Adaptado</Text>
@@ -188,7 +195,8 @@ ${adaptedResult.changes.map(c => `• ${c}`).join('\n')}
           </View>
         </>
       )}
-    </ScrollView>
+      </ScrollView>
+    </Fragment>
   );
 };
 
@@ -276,5 +284,27 @@ const styles = StyleSheet.create({
   actionButton: {
     flex: 1,
     marginRight: 8,
+  },
+  loadingContainer: {
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F9FAFB',
+    borderRadius: 12,
+    marginVertical: 16,
+  },
+  loadingText: {
+    marginTop: 12,
+    fontSize: 16,
+    color: '#4F46E5',
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  loadingSubtext: {
+    marginTop: 8,
+    fontSize: 12,
+    color: '#6B7280',
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
 });
