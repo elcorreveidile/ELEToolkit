@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Alert, Switch } from 'react-native'
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Card } from '../../components/ui/Card';
+import { LoadingMessages } from '../../components/ui/LoadingMessages';
 import { SPANISH_LEVELS } from '../../constants';
 import { openaiService } from '../../lib/openai/client';
 import { useMaterials } from '../../hooks/useMaterials';
@@ -153,7 +154,9 @@ ${adaptedResult.changes.map(c => `• ${c}`).join('\n')}
         style={styles.adaptButton}
       />
 
-      {adaptedResult && (
+      {loading && <LoadingMessages type="adaptador" />}
+
+      {adaptedResult && !loading ? (
         <>
           <Card style={styles.resultCard}>
             <Text style={styles.resultTitle}>Texto Adaptado</Text>

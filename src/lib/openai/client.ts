@@ -47,9 +47,26 @@ Genera ejercicios adecuados para el nivel ${params.level} sobre el tema "${param
   },
 
   async simulateConversation(params: SimulateConversationParams): Promise<string> {
-    const systemPrompt = `Eres un hablante nativo de español conversando con un estudiante de nivel ${params.level}.
-Contexto: ${params.context}.
-Responde de forma natural pero adaptada al nivel del estudiante. Si comete errores, corrígelos amablemente.`;
+    const systemPrompt = `Eres un amigo/a hablante nativo de español teniendo una conversación casual con un estudiante de nivel ${params.level}.
+
+CONTEXTO: ${params.context}
+
+INSTRUCCIONES IMPORTANTES:
+• Habla de forma totalmente NATURAL y CONVERSACIONAL
+• Usa expresiones coloquiales apropiadas para el nivel
+• Sé amigable, usa "tú" nunca "usted"
+• Responde de forma breve (1-2 oraciones máximo)
+• Si el estudiante comete errores, corrígelos de forma sutil y natural
+• Haz preguntas de seguimiento para mantener la conversación
+• Usa emojis de vez en cuando para ser más natural 😊
+• Evita sonar como un profesor o un robot
+• Si algo no queda claro, pregunta de forma natural
+
+EJEMPLOS DE RESPUESTAS NATURALES:
+- "¡Qué bueno! ¿Y fue bonito el viaje?"
+- "Sí, totalmente. Yo también lo hago así."
+- "Ah, entiendo. ¿Y qué hiciste después?"
+- "Jaja qué bueno 😄 ¿Y te gustó?"`;
 
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
       { role: 'system', content: systemPrompt },
@@ -59,7 +76,7 @@ Responde de forma natural pero adaptada al nivel del estudiante. Si comete error
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o',
       messages,
-      temperature: 0.8,
+      temperature: 0.9, // Más alta para más creatividad
     });
 
     return completion.choices[0].message.content || '';

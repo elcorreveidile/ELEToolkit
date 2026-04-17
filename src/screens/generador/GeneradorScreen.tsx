@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { Fragment } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
+import { LoadingMessages } from '../../components/ui/LoadingMessages';
+import { AuthAlert } from '../../components/ui/AuthAlert';
 import { SPANISH_LEVELS, EXERCISE_TYPES, COMMON_TOPICS } from '../../constants';
 import { openaiService } from '../../lib/openai/client';
 import { useMaterials } from '../../hooks/useMaterials';
@@ -14,6 +17,7 @@ export const GeneradorScreen = () => {
   const [focus, setFocus] = useState('');
   const [generatedContent, setGeneratedContent] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showAuthAlert, setShowAuthAlert] = useState(false);
 
   const { saveMaterial } = useMaterials();
 
@@ -51,13 +55,18 @@ export const GeneradorScreen = () => {
         type: 'generador',
       });
       Alert.alert('Éxito', 'Material guardado correctamente');
-    } catch (error) {
-      Alert.alert('Error', 'No se pudo guardar el material');
+    } catch (error: any) {
+      if (error.message === 'Debes iniciar sesión para guardar materiales') {
+        setShowAuthAlert(true);
+      } else {
+        Alert.alert('Error', 'No se pudo guardar el material');
+      }
     }
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <Fragment>
+      <ScrollView style={styles.container}>
       <Text style={styles.title}>Generador de Ejercicios</Text>
 
       <View style={styles.section}>
@@ -126,7 +135,9 @@ export const GeneradorScreen = () => {
         style={styles.generateButton}
       />
 
-      {generatedContent ? (
+      {loading && <LoadingMessages type="generador" />}
+
+      {generatedContent && !loading ? (
         <View style={styles.resultSection}>
           <Text style={styles.resultTitle}>Ejercicio Generado</Text>
           <Text style={styles.resultContent}>{generatedContent}</Text>
@@ -138,6 +149,11 @@ export const GeneradorScreen = () => {
         </View>
       ) : null}
     </ScrollView>
+    <AuthAlert
+      visible={showAuthAlert}
+      onClose={() => setShowAuthAlert(false)}
+    />
+    </Fragment>
   );
 };
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
+import { LoadingMessages } from '../../components/ui/LoadingMessages';
 import { SPANISH_LEVELS, CONVERSATION_CONTEXTS } from '../../constants';
 import { openaiService } from '../../lib/openai/client';
 import { useMaterials } from '../../hooks/useMaterials';
@@ -181,7 +182,7 @@ export const SimuladorScreen = () => {
         ))}
         {loading && (
           <View style={[styles.messageBubble, styles.assistantMessage]}>
-            <Text style={styles.loadingText}>Escribiendo...</Text>
+            <LoadingMessages type="simulador" />
           </View>
         )}
       </ScrollView>

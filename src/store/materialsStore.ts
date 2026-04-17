@@ -48,7 +48,7 @@ export const useMaterialsStore = create<MaterialsState>((set, get) => ({
   saveMaterial: async (material) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('Not authenticated');
+      if (!user) throw new Error('Debes iniciar sesión para guardar materiales');
 
       const { data, error } = await supabase
         .from('materials')
