@@ -56,18 +56,16 @@ Eres profesor experto de ELE (Español como Lengua Extranjera) especializado en:
 
 🎯 META (M):
 Que el estudiante sea capaz de:
-- Practicar y consolidar ${params.topic} a nivel ${params.level}
-- Aplicar estructuras gramaticales en contextos comunicativos
-- Desarrollar fluidez y precisión en ${params.type}
+- Comprender y ${params.type === 'conversation' ? 'participar' : 'producir'} textos según criterios orientativos MCER ${params.level}
+- Usar estructuras y vocabulario apropiados para nivel ${params.level}
+- Desarrollar competencias comunicativas reales según MCER
 
 ⚙️ ESPECIFICACIONES (E):
-- Nivel: ${params.level} estricto (no usar vocabulario/estructuras de otros niveles)
+- CRITERIOS ORIENTATIVOS MCER ${params.level}: ${getMCERCriteria(params.level)}
 - Variedad: Español peninsular estándar
-- Registro: Adecuado al nivel (informal/formal según contexto)
-- Longitud: Texto de 100-150 palabras + ejercicio
-- Ejercicio: 5-10 items según tipo
-- Respuestas: Incluir clave completa
-- Cultural: Incluir referencias culturales hispanas apropiadas
+- Registro: Adecuado al nivel y contexto
+- Enfoque: Comunicativo, no gramatical
+- Cultural: Referencias hispanas apropiadas
 
 📋 EJEMPLO (E):
 Genera un ejercicio sobre ${params.topic} con esta estructura:
@@ -194,10 +192,10 @@ Eres experto en adaptación de materiales ELE y:
 
 🎯 META (M):
 Que el estudiante pueda:
-- Comprender el texto con autonomía relativa
-- Acceder a contenido de interés adaptado
-- Progresar sin frustración ni aburrimiento
-- Desarrollar estrategias de compensación
+- Comprender el texto según criterios orientativos MCER ${params.targetLevel}
+- Acceder a contenido de interés adaptado a su nivel competencial
+- Progresar sin frustración ni aburrimiento (principio i+1)
+- Desarrollar estrategias de compensación progresivas
 
 ⚙️ ESPECIFICACIONES (E):
 - Nivel objetivo: ${params.targetLevel} estricto
@@ -323,61 +321,75 @@ IA: "Interesante perspectiva. ¿Qué modelo alternativo propones?"
 function getAdaptationCriteria(level: SpanishLevel): string {
   const criteria = {
     A1: `
-- VOCABULARIO: Máximo 500-1000 palabras más frecuentes
-- GRAMÁTICA: Solo presente indicativo, ser/estar básico
-- ESTRUCTURAS: Frases cortas y simples (SVO)
-- TIEMPOS VERBALES: Solo presente, infinitivo, gerundio
-- CONECTORES: Básicos (y, o, pero, porque)
-- REGISTER: Muy informal y simple
-- OMITIR: Cualquier tiempo compuesto, subjuntivo, condicionales
+- CRITERIOS ORIENTATIVOS MCER:
+  • Textos muy breves: 30-80 palabras
+  • Frases simples y cortas
+  • Tiempo verbal: Presente de indicativo
+  • Competencia: Hacerse entender en frases básicas
+  • Registro: Informal y simple
+  • COMUNICACIÓN: Supervivencia inmediata
 `,
     A2: `
-- VOCABULARIO: 1000-2000 palabras frecuentes
-- GRAMÁTICA: Presente + pretérito indefinido básico
-- ESTRUCTURAS: Frases algo más largas, coordinación básica
-- TIEMPOS VERBALES: Presente, pretérito indefinido, ir a + inf
-- CONECTORES: Básicos + algunos temporales (cuando, luego, antes)
-- REGISTER: Informal
-- OMITIR: Imperfecto, subjuntivo, condicionales
+- CRITERIOS ORIENTATIVOS MCER:
+  • Textos breves: 80-150 palabras
+  • Presente + pasado básico (pretérito indefinido)
+  • Inicio de cohesión básica
+  • Competencia: Narrar situaciones simples
+  • Registro: Informal
+  • COMUNICACIÓN: Intercambio información básica
 `,
     B1: `
-- VOCABULARIO: 2000-3000 palabras
-- GRAMÁTICA: Presente, pretérito, imperfecto, futuros
-- ESTRUCTURAS: Subordinación con que/que/donde, contraste tiempos
-- TIEMPOS VERBALES: Todos los indicativos, subjuntivo presente básico
-- CONECTORES: Amplia variedad de conectores (sin embargo, por eso, ya que)
-- REGISTER: Informal y semi-formal
-- PUEDE INCLUIR: Subjuntivo de deseo/recomendación
+- CRITERIOS ORIENTATIVOS MCER:
+  • Textos medios: 150-250 palabras
+  • Narración + contraste de tiempos (pretérito/imperfecto)
+  • Coherencia textual básica
+  • Competencia: Relatar experiencias y opiniones
+  • Registro: Informal y semi-formal
+  • COMUNICACIÓN: Narración personal y expresar opiniones
 `,
     B2: `
-- VOCABULARIO: 3000-4000 palabras
-- GRAMÁTICA: Todos los indicativos + subjuntivo completo
-- ESTRUCTURAS: Subordinación compleja, relativos
-- TIEMPOS VERBALES: Todos, incl. subjuntivo imperfecto
-- CONECTORES: Conectores discursivos y argumentativos
-- REGISTER: Variable según contexto
-- PUEDE INCLUIR: Condicionales, hipotéticos
+- CRITERIOS ORIENTATIVOS MCER:
+  • Textos desarrollados: 250-350 palabras
+  • Variedad de tiempos verbales + inicio subjuntivo
+  • Organización discursiva clara
+  • Competencia: Argumentar y debatir
+  • Registro: Variable según contexto
+  • COMUNICACIÓN: Argumentación y debate sobre temas concretos
 `,
     C1: `
-- VOCABULARIO: 4000-6000 palabras
-- GRAMÁTICA: Estructuras complejas, nominalizaciones
-- ESTRUCTURAS: Subordinación anidada, estilo compacto
-- TIEMPOS VERBALES: Todos, incl. formas compuestas complejas
-- CONECTORES: Conectores académicos y especializados
-- REGISTER: Variable, desde informal a formal
-- PUEDE INCLUIR: Pasiva impersonal, construcciones absolutas
+- CRITERIOS ORIENTATIVOS MCER:
+  • Textos extensos: 350-500 palabras
+  • Estructuras complejas + matices expresivos
+  • Precisión léxica y gramatical
+  • Competencia: Abstraer y formular hipótesis
+  • Registro: Variable con control
+  • COMUNICACIÓN: Abstracción, hipótesis y matización
 `,
     C2: `
-- VOCABULARIO: 6000+ palabras, incl. técnica y especializada
-- GRAMÁTICA: Todas las estructuras posibles
-- ESTRUCTURAS: Máxima complejidad sintáctica
-- TIEMPOS VERBALES: Todos incl. formas literarias
-- CONECTORES: Conectores de alta registers, matizadores
-- REGISTER: Cualquier registro con precisión estilística
-- PUEDE INCLUIR: Ironía, dobles sentidos, registro literario
+- CRITERIOS ORIENTATIVOS MCER:
+  • Textos muy extensos: 500+ palabras
+  • Alta precisión + estilo y control discursivo
+  • Dominio de matices y registros
+  • Competencia: Precisión, ironía, estilo
+  • Registro: Cualquier registro con maestría
+  • COMUNICACIÓN: Control discursivo total y naturalidad
 `,
   };
   return criteria[level];
 }
 
 export type SpanishLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+
+// FUNCIONES AUXILIARES PARA SISTEMA FRAME
+
+function getMCERCriteria(level: SpanishLevel): string {
+  const criteria = {
+    A1: 'Textos muy breves (30-80 palabras), frases simples, presente',
+    A2: 'Textos breves (80-150 palabras), presente + pasado básico',
+    B1: 'Textos medios (150-250 palabras), narración y contraste de tiempos',
+    B2: 'Textos desarrollados (250-350 palabras), variedad de tiempos + inicio de subjuntivo',
+    C1: 'Textos extensos (350-500 palabras), estructuras complejas, matices',
+    C2: 'Textos muy extensos (500+ palabras), alta precisión, estilo y control discursivo',
+  };
+  return criteria[level];
+}
